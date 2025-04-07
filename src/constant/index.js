@@ -16,11 +16,6 @@ export const course = {
       name: 'State of a component',
       exercises: 14,
       id: 3
-    },
-    {
-      name: 'State of a component 45',
-      exercises: 141,
-      id: 4
-    }
+    }    
   ]
 }

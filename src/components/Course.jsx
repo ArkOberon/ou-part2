@@ -8,6 +8,7 @@ const Course = ({course}) => {
     <>
       <Header name={course.name} />
       <Content parts={course.parts} />
+      <p><b>TOTAL OF {} EXCERCISES</b></p>
     </>
   )
 }
