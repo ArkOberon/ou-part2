@@ -1,7 +1,10 @@
+import Header from "./Header"
 
-const Content = ({ parts }) => {
+const Content = ({ name, parts }) => {
+  const totalExercises = parts.reduce((sum, part) => sum + part.exercises, 0);
   return (
     <>
+      <Header name={name} />
       {
         parts.map((part) => (
           <p key={part.id}>
@@ -9,6 +12,7 @@ const Content = ({ parts }) => {
           </p>
         ))
       }
+      <p><b>TOTAL OF {totalExercises} EXCERCISES</b></p>
     </>
   )
 }
