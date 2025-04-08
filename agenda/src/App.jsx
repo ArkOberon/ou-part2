@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
+import PersonList from './components/PersonList'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -7,19 +10,24 @@ const App = () => {
       phone: '040-123789' 
     }
   ]) 
+
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
+  const [nameList, setNameList] = useState([])
 
   const handleChange = (e) => {
     e.preventDefault()
 
     if(e.target.id === 'name') {
       setNewName(e.target.value)
-    } else if(e.target.id === 'phone') {
+    } if(e.target.id === 'phone') {
       setNewPhone(e.target.value)
     }
 
-    console.log(e.target.id)
+    if(e.target.id === 'search') {
+      const filteredPersons = persons.filter(person => person.name.toLowerCase().includes(e.target.value.toLowerCase()))
+      setNameList(filteredPersons)
+    }    
   }
 
   const handleSubmit = (e) => {
@@ -42,26 +50,25 @@ const App = () => {
 
   return (
     <div>
-      <h2>Phonebook</h2>
-      <form>
-        <div>
-          name: <input id="name" onChange={(e) => handleChange(e)} />
-        </div>
-        <div>
-          phone: <input id="phone" onChange={(e) => handleChange(e)} />
-        </div>
-        <div>
-          <button type="submit" onClick={(e) => handleSubmit(e)}>add</button>
-        </div>
-      </form>
+      <h2>Phonebook</h2> 
+           
+      <Filter 
+        handleChange={handleChange} 
+        nameList={nameList} 
+      />
+
+      <h2>Add a new</h2>
+      
+      <PersonForm 
+        handleChange={handleChange} 
+        handleSubmit={handleSubmit}       
+      />
+
       <h2>Numbers</h2>
-      <div>
-        {persons.map((person, index) => (
-          <div key={index}>
-            <p>{person.name} {" "} {person.phone}</p>
-          </div>
-        ))}
-      </div>
+      
+      <PersonList 
+        persons={persons}       
+      />
     </div>
   )
 }
