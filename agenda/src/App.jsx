@@ -4,16 +4,23 @@ import PersonForm from './components/PersonForm'
 import PersonList from './components/PersonList'
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { 
-      name: 'Arto Hellas',
-      phone: '040-123789' 
-    }
-  ]) 
-
+  const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
   const [nameList, setNameList] = useState([])
+
+  const initialPersons = async () => {
+    if(persons.length > 0) {
+      return
+    }
+    const initialValue =  await fetch('http://localhost:4000/persons')
+    .then(response => response.json())
+    .then(data => setPersons(data))
+    .catch(error => console.error('Error fetching data:', error))
+    return initialValue    
+  }
+
+  initialPersons()
 
   const handleChange = (e) => {
     e.preventDefault()
