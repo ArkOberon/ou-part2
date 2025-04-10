@@ -21,6 +21,7 @@ const App = () => {
   }
 
   initialPersons()
+  console.log('persons', persons)
 
   const handleChange = (e) => {
     e.preventDefault()
@@ -42,7 +43,7 @@ const App = () => {
     
     const newPerson = { 
       name: newName, 
-      phone: newPhone
+      number: newPhone
     }
 
     if(persons.some(person => person.name === newName)) {
@@ -54,13 +55,22 @@ const App = () => {
 
     setNewName('')
 
-    fetch('http://localhost:4000/persons', {
+    fetch('http://localhost:3000/persons', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(newPerson)
     })
+  }
+
+  const handleDelete = (id) => {
+    if (window.confirm(`Delete ${id}?`)) {
+      setPersons(persons.filter(person => person.id !== id))
+      fetch(`http://localhost:3000/persons/${id}`, {
+        method: 'DELETE'
+      })
+    }
   }
 
   return (
@@ -82,7 +92,8 @@ const App = () => {
       <h2>Numbers</h2>
       
       <PersonList 
-        persons={persons}       
+        persons={persons} 
+        handleDelete={handleDelete}      
       />
     </div>
   )
