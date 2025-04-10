@@ -47,8 +47,21 @@ const App = () => {
     }
 
     if(persons.some(person => person.name === newName)) {
-      alert(`${newName} is already added to phonebook`)
-      return
+      if(window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)){
+        const personToUpdate = persons.find(person => person.name === newName)
+        const updatedPerson = { ...personToUpdate, number: newPhone }
+        
+        setPersons(persons.map(person => person.id !== personToUpdate.id ? person : updatedPerson))
+
+        fetch(`http://localhost:3000/persons/${personToUpdate.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(updatedPerson)
+        })
+      } 
+      return     
     }
 
     setPersons(persons.concat(newPerson))
