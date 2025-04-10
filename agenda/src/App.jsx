@@ -13,7 +13,7 @@ const App = () => {
     if(persons.length > 0) {
       return
     }
-    const initialValue =  await fetch('http://localhost:4000/persons')
+    const initialValue =  await fetch('http://localhost:3000/persons')
     .then(response => response.json())
     .then(data => setPersons(data))
     .catch(error => console.error('Error fetching data:', error))
@@ -53,6 +53,14 @@ const App = () => {
     setPersons(persons.concat(newPerson))
 
     setNewName('')
+
+    fetch('http://localhost:4000/persons', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(newPerson)
+    })
   }
 
   return (
